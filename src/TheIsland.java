@@ -1,41 +1,5 @@
-I - Plateau
-
-On a un carré avec une fenêtre de marge de 30px.
-taille fenêtre(711,635)
-
-Largeur max au milieu d'hexagone : 13
-Longueur max au milieu d'hexagone: 13
-
-On vafaire un code qui ca créer un table pour notre module java qui aura les lignes suivantes:
-Le chiffre en premier est le nombre d'élément de chaque ligne:
-Chacun des éléments de chaque ligne sera representé par des hexagones n'étant pas rempli avec des arêtes de 1px d'épaissseur. Les id où on parle des serpents de mer ne sont pas à prendre en compte mais les autres met en évidences les arêtes des éléments qui seront plus prenoncées avec une épaisseur de 3px.
-
-haut signifie en haut à gauche et en haut à droite
-bas signifie en bas à gauche et en bas à droite
-
-Sur la fenêtre, on aura un panel en FlowLayout qui va centré chaque ligne de la table
-
-7
-10  (serpent de mer: indice 0)
-11  (serpent de mer: indice 10)
-10  (id 3: gauche et haut, id: 4: haut, id 5: haut, id 6: haut droite)
-11  (id 3: gauche (haut gauche), id 7: (haut droite) droite) 
-12  (id 2: (bas gauche) gauche haut, id 3: (haut gauche), id 8: (haut droite), id 2: (bas droite) droite haut) 
-
-11  (serpent de mer: indice 5) (id 2: gauche, id 8: droite)
-
-12  (id 2: (haut gauche) gauche bas, id 3: (bas gauche), id 8: (bas droite), id 2: (haut droite) droite bas)
-11  (id 3: gauche (bas gauche), id 7: (bas droite) droite)
-10  (id 3: gauche et bas, id: 4: bas, id 5: bas, id 6: bas droite)
-11  (serpent de mer: indice 0)
-10  (serpent de mer: indice 10)
-7
-
-
-II - Les classes
-
-- Créer une class position qui va garder les coordonnées de
-chaque élément sur le plateau
+import java.util.ArrayList;
+import java.util.List;
 
 class Position {
     int x;
@@ -62,27 +26,25 @@ class Position {
         return this.y;
     }
     
-    public destroy(){
+    public void destroy(){
     	this.x = -1;
     	this.y = -1;
     }
 }
-fenêtre(711,635)
+
 
 class FaceCachée extends Position {
-    String typeTuile;
     String typeFaceCachée;
 
     public FaceCachée(int x, int y, String typeFaceCachée) {
         super(x, y);
-        this.typeTuile = typeTuile;
-        this.typeFaceCachée = typeFaceCachée
+        this.typeFaceCachée = typeFaceCachée;
     }
 
-    public static void bonus() {
+    public void bonus() {
     }
 
-    public static void évènement() {
+    public void évènement() {
     }
 
     @Override
@@ -105,9 +67,6 @@ class AjouterRequin extends FaceCachée {
 
     @Override
     public void évènement() {
-        if (Requin.créerPionRequin() != null) {
-            new Requin(this.x, this.y);
-        }
     }
 }
 
@@ -122,9 +81,7 @@ class AjouterBaleine extends FaceCachée {
 
     @Override
     public void évènement() {
-        if (Baleine.créerBaleine() != null) {
-            new Baleine(this.x, this.y);
-        }
+       
     }
 }
 
@@ -138,9 +95,6 @@ class AjouterBateau extends FaceCachée {
 
     @Override
     public void évènement() {
-        if (Bateau.créerBateau() != null) {
-            new Bateau(this.x, this.y);
-        }
     }
 }
 
@@ -275,7 +229,7 @@ class EliminerBaleine extends FaceCachée {
 class Tuile extends Position {
     int niveauEngloutissement;
     FaceCachée faceCachée;
-    List<Integer>List<Integer> listeDePions = new ArrayList<>();
+    List<Integer> listeDePions = new ArrayList<>();
 
     public Tuile(int x, int y, int niveauEngloutissement, FaceCachée faceCachée, List<Integer> listeDePions) {
         super(x, y);
@@ -297,9 +251,7 @@ class Tuile extends Position {
         return faceCachée;
     }
     
-     //On rééecris la fonction qui change les
-      coordonnées en une fonction qui ne fais rien car
-      cet élément ne se déplace pas.
+     //On rééecris la fonction qui change les coordonnées en une fonction qui ne fais rien car cet élément ne se déplace pas.
 
     @Override
     public void setX(int x) {
@@ -313,20 +265,20 @@ class Tuile extends Position {
 }
 
 class Plage extends Tuile {
-    public Plage(int x, int y, FaceCachée faceCachée) {
-        super(x, y, 1, faceCachée);
+    public Plage(int x, int y, FaceCachée faceCachée, List<Integer> listeDePions) {
+        super(x, y, 1, faceCachée, listeDePions);
     }
 }
 
 class Forêt extends Tuile {
-    public Forêt(int x, int y, FaceCachée faceCachée) {
-        super(x, y, 2, faceCachée);
+    public Forêt(int x, int y, FaceCachée faceCachée, List<Integer> listeDePions) {
+        super(x, y, 2, faceCachée, listeDePions);
     }
 }
 
 class Montagne extends Tuile {
-    public Montagne(int x, int y, FaceCachée faceCachée) {
-        super(x, y, 3, faceCachée);
+    public Montagne(int x, int y, FaceCachée faceCachée, List<Integer> listeDePions) {
+        super(x, y, 3, faceCachée, listeDePions);
     }
 }
 
@@ -344,14 +296,14 @@ class Monstre extends Position {
     }
 }
 
-public class SerpentDeMer extends Monstre {
+class SerpentDeMer extends Monstre {
     private static int nombreDeSerpent = 5;
 
     private SerpentDeMer(int x, int y) {
         super(x, y, "Serpent de mer");
     }
 
-    public static SerpentDeMer creerSerpentDeMer(int x, int y) {
+    public static SerpentDeMer créerSerpentDeMer(int x, int y) {
         if (nombreDeSerpent > 0) {
             nombreDeSerpent--;
             return new SerpentDeMer(x, y);
@@ -370,14 +322,14 @@ public class SerpentDeMer extends Monstre {
 }
 
 
-public class Requin extends Monstre {
+class Requin extends Monstre {
     private static int nombreDeRequin = 6;
 
     private Requin(int x, int y) {
         super(x, y, "Requin");
     }
 
-    public static Requin creerRequin(int x, int y) {
+    public static Requin créerRequin(int x, int y) {
         if (nombreDeRequin > 0) {
             nombreDeRequin--;
             return new Requin(x, y);
@@ -396,14 +348,14 @@ public class Requin extends Monstre {
 }
 
 
-public class Baleine extends Monstre {
+class Baleine extends Monstre {
     private static int nombreDeBaleine = 5;
 
     private Baleine(int x, int y) {
         super(x, y, "Baleine");
     }
 
-    public static Baleine creerBaleine(int x, int y) {
+    public static Baleine créerBaleine(int x, int y) {
         if (nombreDeBaleine > 0) {
             nombreDeBaleine--;
             return new Baleine(x, y);
@@ -424,7 +376,7 @@ public class Baleine extends Monstre {
 
 
 
-public class Bateau extends Position {
+class Bateau extends Position {
     private static int nombreDeBateaux = 12;
     private int capaciteBateau = 3;
 
@@ -432,7 +384,7 @@ public class Bateau extends Position {
         super(x, y);
     }
 
-    public static Bateau creerBateau(int x, int y) {
+    public static Bateau créerBateau(int x, int y) {
         if (nombreDeBateaux > 0) {
             nombreDeBateaux--;
             return new Bateau(x, y);
@@ -453,16 +405,13 @@ public class Bateau extends Position {
         if (capaciteBateau > 0) {
             capaciteBateau--;
             //Oui on peut ajouter explorateur sur le bateau
-            return true
+            return true;
         } else {
 	    //Non on ne peut pas ajouter explorateur sur le bateau
-	    return false
+	    return false;
         }
     }
 }
-
-
-
 
 class Explorateur extends Position {
     int pointsDeTresor;
@@ -476,8 +425,3 @@ class Explorateur extends Position {
         return pointsDeTresor;
     }
 }
-
-
-
-
-
