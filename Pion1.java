@@ -4,7 +4,7 @@ public  abstract class Pion1 {
     private int coord_x;
     private int coord_y;
 
-    // Constructeur
+    // Constructeurs
     public Pion1(int nb_case_parcourable, int position, int coord_x, int coord_y) {
         this.nb_case_parcourable = nb_case_parcourable;
         this.position = position;
