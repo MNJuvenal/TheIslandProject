@@ -52,7 +52,7 @@ public class HexagonalGrid extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Crée un panneau de fond
-        JPanel backgroundPanel = createBackgroundPanel("TheIsland.jpeg");
+        JPanel backgroundPanel = createBackgroundPanel("../Images/TheIsland.jpeg");
 
         // Crée le panneau d'hexagones
         HexagonalGrid hex = new HexagonalGrid();
